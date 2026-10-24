@@ -4,26 +4,25 @@ height = 1000
 playersAlive = 0
 
 players = []
-class Player:
-    def __init__(self, name, health):
-        self.name = name
-        self.health = health
+from main import Player
 for i in range(4):
     name = input(f"Enter the name of player {i+1}, or enter STOP to finish entering players: ")
     if name =="STOP":
         break
     else:
-        players = players.append(Player(name,5))
+        players.append(Player(name,5))
 
 
 
 def addPlayerToFrame(name):
+    global playersAlive
     playerObj = Player(name,5)
     playersAlive+=1
     playerObjFrame = ctk.CTkFrame(master =playerFrame,width = playerFrame.winfo_width() -25, height = playerFrame.winfo_height()/4)
     playerObjFrame.place(x=25,y=playersAlive*playerObjFrame.winfo_height()/4)
     playerNameLabel = ctk.CTkLabel(master = playerObjFrame,text = playerObj.name)
     playerNameLabel.place(x = 250,y = playerObjFrame.winfo_height()/4)
+
 def decrementTime():
     global time
     if time<0:
@@ -33,6 +32,7 @@ def decrementTime():
         timerwidget.configure(text = f"{time}s")
         window.after(1000,decrementTime)
 
+
 window = ctk.CTk()
 window.geometry(f"{width}x{height}")
 window.resizable(False,False)
@@ -40,6 +40,9 @@ window.title("Endless Encounters")
 
 playerFrame = ctk.CTkFrame(master =window, width = width/4, height=height/4)
 playerFrame.place(x=25,y=25)
+
+for player in players:
+    addPlayerToFrame(player.name)
 
 time = 20
 timerwidget = ctk.CTkLabel(master =window,width = 50,height=50, border_width=3,border_color="black",text = f"{time}s",fg_color="white",text_color="black")

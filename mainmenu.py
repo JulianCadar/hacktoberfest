@@ -38,14 +38,28 @@ def addPlayerToFrame(name):
 
     heartframe.grid(row = playersAlive-1,column=1)
     playerNameLabel.grid(row = playersAlive-1,column=0)
-def decrementTime():
+def resetTime():
     global time
-    if time<1:
-        return
+    global currentTurn
+    time = 20
+    currentplayernum = players.index(currentTurn)
+    currentplayernum+=1
+    currentplayernum = currentplayernum%4
+    currentTurn = players[currentplayernum]
+    turnLabel.configure(text = f"It is {currentTurn.name}'s turn")
+    turnDescriptionLabel.configure(text = f"What will {currentTurn.name} do?")
+    timerwidget.configure(text = f"{time}s")
+    decrementTime()
+def decrementTime():
+    global currentTurn
+    global time
+    if time<=0:
+        resetTime()
     else:
         time-=1
         timerwidget.configure(text = f"{time}s")
         window.after(1000,decrementTime)
+        return
 currentTurn = players[0]
 def getAndPlayTurn(*args):
     global currentTurn

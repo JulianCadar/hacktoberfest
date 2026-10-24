@@ -7,16 +7,6 @@ height = 1000
 playersAlive = 0
 
 player_names = []
-class Player():
-    name: str
-    hearts: int
-    max_hearts: int
-    is_alive: bool
-    weapon: str
-    item: str
-    def __init__(self, name, health):
-        self.name = name
-        self.hearts = health
 for i in range(4):
     name = input(f"Enter the name of player {i+1}: ")
     if name =="STOP":
@@ -24,14 +14,13 @@ for i in range(4):
     else:
         player_names.append(name)
 
-def addPlayerToFrame(name):
+def addPlayerToFrame(name, hearts):
     global playersAlive
-    playerObj = Player(name,5)
     playersAlive+=1
-    playerNameLabel = ctk.CTkLabel(master = playerFrame,text = playerObj.name, fg_color="white", border_color="black",border_width=1, text_color="black",font = ("Calibri",30))
+    playerNameLabel = ctk.CTkLabel(master = playerFrame,text = name, fg_color="white", border_color="black",border_width=1, text_color="black",font = ("Calibri",30))
     heartImageImport = Image.open("Images/heart full.png")
     heartframe = ctk.CTkFrame(master=playerFrame)
-    for _ in range(playerObj.hearts):
+    for _ in range(hearts):
         heartImage = ctk.CTkImage(light_image=heartImageImport,dark_image=heartImageImport,size=(50,50))
         heartLabel = ctk.CTkLabel(master = heartframe,text="",image=heartImage)
         heartLabel.pack(side = "right")
@@ -66,6 +55,8 @@ def getAndPlayTurn(*args):
     global state
     global currentTurn
     global time
+    global playersAlive
+    global playerFrame
     turnText = turnEntry.get()
 
     response = AI.chat.send_message(f"player chose: {turnText}")
@@ -82,6 +73,13 @@ def getAndPlayTurn(*args):
     turnDescriptionLabel.configure(text = f"What will {currentTurn} do?")
     turnEntry.delete(0,ctk.END)
 
+    playerFrame.destroy()
+    playerFrame = ctk.CTkFrame(master=outerPlayerFrame)
+    playerFrame.pack()
+    playersAlive=0
+    for player in state.party:
+        #print(player)
+        addPlayerToFrame(player.name, player.hearts)
 def update_textbox():
     text = state.current_turn.narrative_resolution + "\n\nPlease enter one of the following:\n\n"
     for choice in state.current_turn.choices:
@@ -102,12 +100,14 @@ window.geometry(f"{width}x{height}")
 window.resizable(False,False)
 window.title("Endless Encounters")
 
-playerFrame = ctk.CTkFrame(master =window, width = width/4 +50,height=height/4 +50,)
-playerFrame.place(x=25,y=25)
+outerPlayerFrame = ctk.CTkFrame(master =window, width = width/4 +50,height=height/4 +50,)
+outerPlayerFrame.place(x=25,y=25)
+playerFrame = ctk.CTkFrame(master=outerPlayerFrame)
+playerFrame.pack()
 
 for player in player_names:
     #print(player)
-    addPlayerToFrame(player)
+    addPlayerToFrame(player, 5)
 
 time = 20
 timerwidget = ctk.CTkLabel(master =window,width = 50,height=50, border_width=3,border_color="black",text = f"{time}s",fg_color="white",text_color="black")

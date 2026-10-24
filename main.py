@@ -47,17 +47,9 @@ def run():
 
     client = genai.Client(api_key=api_key)
 
-    # Put ThinkingConfig INSIDE GenerateContentConfig alongside response_schema
-    config = types.GenerateContentConfig(
-        response_mime_type="application/json",
-        response_schema=GameState,
-        temperature=0.7,
-    )
-
     # Use a Gemini model that supports thinking_config and response_schema
     chat = client.chats.create(
-        model="gemma-4-26b-a4b-it",
-        config=config,
+        model="gemma-4-26b-a4b-it"
     )
 
     with open("init_prompt.txt", "r", encoding="utf-8") as f:

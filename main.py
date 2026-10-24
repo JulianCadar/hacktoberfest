@@ -12,10 +12,6 @@ class Player(BaseModel):
     is_alive: bool
     weapon: str
     item: str
-    def __init__(self, name, health):
-        super.__init__(self)
-        self.name = name
-        self.hearts = health
 class Choice(BaseModel):
     id: str
     description: str
@@ -70,7 +66,7 @@ Game Configuration:
     print("\nInitializing survival session...\n")
 
     initial_response = chat.send_message(init_prompt)
-    state: GameState = GameState.model_validate_json(initial_response.text)
+    state = GameState.model_validate_json(initial_response.text)
 
     while not state.game_over:
         turn = state.current_turn

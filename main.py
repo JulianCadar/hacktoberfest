@@ -1,5 +1,8 @@
 from google import genai
-
+class Player:
+    def __init__(self, name, health):
+        self.name = name
+        self.health = health
 api_key =  input("Please enter the API key: ")
 print("\033c")  # Clears the screen
 

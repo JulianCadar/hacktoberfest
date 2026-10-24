@@ -2,10 +2,20 @@ import customtkinter as ctk
 width  = 1000
 height = 1000
 playersAlive = 0
+
+players = []
 class Player:
     def __init__(self, name, health):
         self.name = name
         self.health = health
+for i in range(4):
+    name = input(f"Enter the name of player {i+1}, or enter STOP to finish entering players: ")
+    if name =="STOP":
+        break
+    else:
+        players = players.append(Player(name,5))
+
+
 
 def addPlayerToFrame(name):
     playerObj = Player(name,5)
@@ -31,10 +41,11 @@ window.title("Endless Encounters")
 playerFrame = ctk.CTkFrame(master =window, width = width/4, height=height/4)
 playerFrame.place(x=25,y=25)
 
-
 time = 20
 timerwidget = ctk.CTkLabel(master =window,width = 50,height=50, border_width=3,border_color="black",text = f"{time}s",fg_color="white",text_color="black")
 timerwidget.place(x=width-60,y=10)
+
+
 
 window.after(1000,decrementTime)
 window.mainloop()

@@ -18,14 +18,12 @@ def addPlayerToFrame(name):
     global playersAlive
     playerObj = Player(name,5)
     playersAlive+=1
-    playerObjFrame = ctk.CTkFrame(master =playerFrame,width = playerFrame.winfo_width() -25, height = playerFrame.winfo_height()/4)
-    playerObjFrame.place(x=25,y=playersAlive*playerObjFrame.winfo_height()/4)
-    playerNameLabel = ctk.CTkLabel(master = playerObjFrame,text = playerObj.name)
-    playerNameLabel.place(x = 250,y = playerObjFrame.winfo_height()/4)
+    playerNameLabel = ctk.CTkLabel(master = playerFrame,text = playerObj.name, fg_color="white", border_color="black",border_width=1, text_color="black")
+    playerNameLabel.pack()
 
 def decrementTime():
     global time
-    if time<0:
+    if time<1:
         return
     else:
         time-=1
@@ -38,10 +36,11 @@ window.geometry(f"{width}x{height}")
 window.resizable(False,False)
 window.title("Endless Encounters")
 
-playerFrame = ctk.CTkFrame(master =window, width = width/4, height=height/4)
+playerFrame = ctk.CTkFrame(master =window, width = width/4 +50,height=height/4 +50,)
 playerFrame.place(x=25,y=25)
 
 for player in players:
+    print(player.name)
     addPlayerToFrame(player.name)
 
 time = 20

@@ -5,7 +5,16 @@ height = 1000
 playersAlive = 0
 
 players = []
-from main import Player
+class Player():
+    name: str
+    hearts: int
+    max_hearts: int
+    is_alive: bool
+    weapon: str
+    item: str
+    def __init__(self, name, health):
+        self.name = name
+        self.hearts = health
 for i in range(4):
     name = input(f"Enter the name of player {i+1}, or enter STOP to finish entering players: ")
     if name =="STOP":
@@ -22,7 +31,7 @@ def addPlayerToFrame(name):
     playerNameLabel = ctk.CTkLabel(master = playerFrame,text = playerObj.name, fg_color="white", border_color="black",border_width=1, text_color="black",font = ("Calibri",30))
     heartImageImport = Image.open("Images/heart full.png")
     heartframe = ctk.CTkFrame(master=playerFrame)
-    for _ in range(playerObj.health):
+    for _ in range(playerObj.hearts):
         heartImage = ctk.CTkImage(light_image=heartImageImport,dark_image=heartImageImport,size=(50,50))
         heartLabel = ctk.CTkLabel(master = heartframe,text="",image=heartImage)
         heartLabel.pack(side = "right")

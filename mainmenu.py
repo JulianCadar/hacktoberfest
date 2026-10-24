@@ -6,7 +6,7 @@ width  = 1000
 height = 1000
 playersAlive = 0
 
-players = []
+player_names = []
 class Player():
     name: str
     hearts: int
@@ -18,13 +18,13 @@ class Player():
         self.name = name
         self.hearts = health
 for i in range(4):
-    name = input(f"Enter the name of player {i+1}, or enter STOP to finish entering players: ")
+    name = input(f"Enter the name of player {i+1}, or enter STOP to finish entering player_names: ")
     if name =="STOP":
         break
     else:
-        players.append(Player(name,5))
+        player_names.append(name)
 
-initResponseFromAI = AI.gen_game(players)
+initResponseFromAI = AI.gen_game(player_names)
 
 def addPlayerToFrame(name):
     global playersAlive
@@ -44,37 +44,38 @@ def resetTime():
     global time
     global currentTurn
     time = 20
-    currentplayernum = players.index(currentTurn)
+    currentplayernum = player_names.index(currentTurn)
     currentplayernum+=1
     currentplayernum = currentplayernum%4
-    currentTurn = players[currentplayernum]
-    turnLabel.configure(text = f"It is {currentTurn.name}'s turn")
-    turnDescriptionLabel.configure(text = f"What will {currentTurn.name} do?")
+    currentTurn = player_names[currentplayernum]
+    turnLabel.configure(text = f"It is {currentTurn}'s turn")
+    turnDescriptionLabel.configure(text = f"What will {currentTurn} do?")
     timerwidget.configure(text = f"{time}s")
     decrementTime()
 def decrementTime():
     global currentTurn
     global time
     if time<=0:
-        resetTime()
+#        resetTime()
+        pass
     else:
         time-=1
         timerwidget.configure(text = f"{time}s")
         window.after(1000,decrementTime)
         return
-currentTurn = players[0]
+currentTurn = player_names[0]
 def getAndPlayTurn(*args):
     global currentTurn
     global time
     turnText = turnEntry.get()
     time = 20
-    currentplayernum = players.index(currentTurn)
+    currentplayernum = player_names.index(currentTurn)
     currentplayernum+=1
     currentplayernum = currentplayernum%4
-    currentTurn = players[currentplayernum]
-    print(turnText)
-    turnLabel.configure(text = f"It is {currentTurn.name}'s turn")
-    turnDescriptionLabel.configure(text = f"What will {currentTurn.name} do?")
+    currentTurn = player_names[currentplayernum]
+    #print(turnText)
+    turnLabel.configure(text = f"It is {currentTurn}'s turn")
+    turnDescriptionLabel.configure(text = f"What will {currentTurn} do?")
     turnEntry.delete(0,ctk.END)
 
 
@@ -87,25 +88,33 @@ window.title("Endless Encounters")
 playerFrame = ctk.CTkFrame(master =window, width = width/4 +50,height=height/4 +50,)
 playerFrame.place(x=25,y=25)
 
-for player in players:
-    print(player.name)
-    addPlayerToFrame(player.name)
+for player in player_names:
+    #print(player)
+    addPlayerToFrame(player)
 
 time = 20
 timerwidget = ctk.CTkLabel(master =window,width = 50,height=50, border_width=3,border_color="black",text = f"{time}s",fg_color="white",text_color="black")
 timerwidget.place(x=width-60,y=10)
 
-turnLabel = ctk.CTkLabel(master=window, text=f"It is {currentTurn.name}'s Turn", font = ("Calibri",50),text_color="black",border_color="black",border_width=5, fg_color="white")
+turnLabel = ctk.CTkLabel(master=window, text=f"It is {currentTurn}'s Turn", font = ("Calibri",50),text_color="black",border_color="black",border_width=5, fg_color="white")
 turnLabel.place(x=width/2 +100, y=25)
 
-turnDescriptionLabel = ctk.CTkLabel(master=window, text = f"What will {currentTurn.name} do?")
+turnDescriptionLabel = ctk.CTkLabel(master=window, text = f"What will {currentTurn} do?")
 turnDescriptionLabel.place(x=width/2 -100, y=100)
 turnEntry = ctk.CTkEntry(master = window, width=200, height=50)
 turnEntry.bind("<Return>",getAndPlayTurn)
 turnEntry.place(x=width/2 +100, y= 100)
 
-responseLabel = ctk.CTkLabel(master = window, text= AI.GameState(initResponseFromAI.text).current_turn.narrative_resolution)
+state = AI.GameState.model_validate_json(initResponseFromAI.text)
+
+responseLabel = ctk.CTkTextbox(master = window)
 responseLabel.place(x = width/2 +100, y = 500)
+
+responseLabel.configure(state="normal")
+
+responseLabel.insert(1.0, state.current_turn.narrative_resolution)
+
+responseLabel.configure(state="disabled")
 
 window.after(1000,decrementTime)
 window.mainloop()

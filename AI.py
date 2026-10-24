@@ -9,9 +9,6 @@ class Player(BaseModel):
     is_alive: bool
     weapon: str
     item: str
-    def __init__(self, name, hearts):
-        self.name = name
-        self.hearts = hearts
 class Choice(BaseModel):
     id: str
     description: str
@@ -40,13 +37,13 @@ chat = client.chats.create(
         )
     )
 
-def gen_game(players: List[Player]):
+def gen_game(players: List[str]):
     global chat
     with open("init_prompt.txt", "r", encoding="utf-8") as f:
         init_prompt = f.read()
     init_prompt = f"""{init_prompt}
     Game Configuration:
-    - players: {len(players)}
+    - players: {players}
     - genre: Sci-Fi
     - difficulty: medium"""
     initial_response = chat.send_message(init_prompt)

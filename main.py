@@ -48,7 +48,12 @@ def run():
 
     # Use a Gemini model that supports thinking_config and response_schema
     chat = client.chats.create(
-        model="gemma-4-26b-a4b-it"
+        model="gemma-4-26b-a4b-it",
+        config=types.GenerateContentConfig(
+            thinking_config=types.ThinkingConfig(
+                thinking_level=types.ThinkingLevel("minimal")
+            )
+        )
     )
 
     with open("init_prompt.txt", "r", encoding="utf-8") as f:

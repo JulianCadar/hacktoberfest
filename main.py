@@ -1,9 +1,11 @@
 from google import genai
+
 class Player:
     def __init__(self, name, health):
         self.name = name
         self.health = health
-api_key =  input("Please enter the API key: ")
+
+api_key = input("Please enter the API key: ")
 print("\033c")  # Clears the screen
 
 client = genai.Client(api_key = api_key) # Instantiates the client
@@ -15,9 +17,15 @@ print(response.text)
 
 # Introduce characters to give chatbot context, turn based game where the ai responds to the option that the player chooses.
 
-def get_health():
-    response = chat.send_message("""What is the health of all the characters? (please return a list of integers like this:)
+def update_health(players: list[Player]):
+    response = chat.send_message(f"""Here are the players in order:
+{"\n".join(player.name for player in players)}
+What is the health of all the characters? (please return a list of integers like this:)
 1
 3
 5
 for 1st player has 1 heart, 2nd has 3 hearts and 3rd player has 5 hearts.""")
+
+    response = response.strip()
+    for i in range(len(response)):
+        players[i].health = int(response[i])

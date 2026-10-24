@@ -12,10 +12,6 @@ class Player(BaseModel):
     is_alive: bool
     weapon: str
     item: str
-    def __init__(self, name, health):
-        super.__init__(self)
-        self.name = name
-        self.hearts = health
 class Choice(BaseModel):
     id: str
     description: str

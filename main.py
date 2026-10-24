@@ -46,9 +46,12 @@ def run():
 
     client = genai.Client(api_key=api_key)
 
+    model = "gemma-4-26b-a4b-it"
+    #model = "gemini-3.5-flash-lite"
+
     # Use a Gemini model that supports thinking_config and response_schema
     chat = client.chats.create(
-        model="gemma-4-26b-a4b-it",
+        model=model,
         config=types.GenerateContentConfig(
             thinking_config=types.ThinkingConfig(
                 thinking_level=types.ThinkingLevel("minimal")

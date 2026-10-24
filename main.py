@@ -18,3 +18,6 @@ def get_health():
 3
 5
 for 1st player has 1 heart, 2nd has 3 hearts and 3rd player has 5 hearts.""")
+
+    response = response.strip()
+    return [int(i) for i in response]

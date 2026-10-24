@@ -14,15 +14,27 @@ def addPlayerToFrame(name):
     playerObjFrame.place(x=25,y=playersAlive*playerObjFrame.winfo_height()/4)
     playerNameLabel = ctk.CTkLabel(master = playerObjFrame,text = playerObj.name)
     playerNameLabel.place(x = 250,y = playerObjFrame.winfo_height()/4)
+def decrementTime():
+    global time
+    if time<0:
+        return
+    else:
+        time-=1
+        timerwidget.configure(text = f"{time}s")
+        window.after(1000,decrementTime)
+
 window = ctk.CTk()
 window.geometry(f"{width}x{height}")
 window.resizable(False,False)
 window.title("Endless Encounters")
 
-playerFrame = ctk.CTkScrollableFrame(master =window, width = width/4, height=height/4)
+playerFrame = ctk.CTkFrame(master =window, width = width/4, height=height/4)
 playerFrame.place(x=25,y=25)
 
 
+time = 20
+timerwidget = ctk.CTkLabel(master =window,width = 50,height=50, border_width=3,border_color="black",text = f"{time}s",fg_color="white",text_color="black")
+timerwidget.place(x=width-60,y=10)
 
-
+window.after(1000,decrementTime)
 window.mainloop()

@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from PIL import Image
 width  = 1000
 height = 1000
 playersAlive = 0
@@ -18,9 +19,16 @@ def addPlayerToFrame(name):
     global playersAlive
     playerObj = Player(name,5)
     playersAlive+=1
-    playerNameLabel = ctk.CTkLabel(master = playerFrame,text = playerObj.name, fg_color="white", border_color="black",border_width=1, text_color="black")
-    playerNameLabel.pack()
+    playerNameLabel = ctk.CTkLabel(master = playerFrame,text = playerObj.name, fg_color="white", border_color="black",border_width=1, text_color="black",font = ("Calibri",30))
+    heartImageImport = Image.open("Images/heart full.png")
+    heartframe = ctk.CTkFrame(master=playerFrame)
+    for _ in range(playerObj.health):
+        heartImage = ctk.CTkImage(light_image=heartImageImport,dark_image=heartImageImport,size=(50,50))
+        heartLabel = ctk.CTkLabel(master = heartframe,text="",image=heartImage)
+        heartLabel.pack(side = "right")
 
+    heartframe.grid(row = playersAlive-1,column=1)
+    playerNameLabel.grid(row = playersAlive-1,column=0)
 def decrementTime():
     global time
     if time<1:

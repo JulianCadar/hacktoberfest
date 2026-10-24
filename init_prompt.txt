@@ -28,8 +28,7 @@ CORE MECHANICS & RULES:
    - Advance the plot to the next living player's situation.
    - Provide exactly 4 diverse, mutually exclusive choices (A, B, C, D) tailored to the acting player's specific equipment, role, and the current threat.
    - Adhere strictly to the provided JSON schema. Do not output markdown code blocks, conversational filler, or commentary.
-   - The first 
-   - 300 chars max for narrative, 150 chars max for options
+   - The first 300 chars max for narrative, 150 chars max for options
    
 Here is info about the game config: 
 

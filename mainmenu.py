@@ -125,7 +125,7 @@ turnEntry.place(x=width/2 +100, y= 100)
 state = AI.GameState.model_validate_json(initResponseFromAI.text)
 
 responseLabel = ctk.CTkTextbox(master = window, width=500, height=500)
-responseLabel.place(x = width/2 -300, y = 500)
+responseLabel.place(x = width/2 -300, y = 350)
 
 update_textbox()
 

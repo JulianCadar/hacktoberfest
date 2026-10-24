@@ -1,5 +1,7 @@
 import customtkinter as ctk
 from PIL import Image
+import AI
+
 width  = 1000
 height = 1000
 playersAlive = 0
@@ -22,7 +24,7 @@ for i in range(4):
     else:
         players.append(Player(name,5))
 
-
+initResponseFromAI = AI.gen_game(players)
 
 def addPlayerToFrame(name):
     global playersAlive
@@ -102,6 +104,8 @@ turnEntry = ctk.CTkEntry(master = window, width=200, height=50)
 turnEntry.bind("<Return>",getAndPlayTurn)
 turnEntry.place(x=width/2 +100, y= 100)
 
+responseLabel = ctk.CTkLabel(master = window, text= AI.GameState(initResponseFromAI.text).current_turn.narrative_resolution)
+responseLabel.place(x = width/2 +100, y = 500)
 
 window.after(1000,decrementTime)
 window.mainloop()

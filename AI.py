@@ -41,12 +41,13 @@ chat = client.chats.create(
     )
 
 def gen_game(players: List[Player]):
+    global chat
+    with open("init_prompt.txt", "r", encoding="utf-8") as f:
+        init_prompt = f.read()
     init_prompt = f"""{init_prompt}
-    
     Game Configuration:
     - players: {len(players)}
     - genre: Sci-Fi
     - difficulty: medium"""
     initial_response = chat.send_message(init_prompt)
-    state = GameState.model_validate_json(initial_response.text)
-    
+    return initial_response

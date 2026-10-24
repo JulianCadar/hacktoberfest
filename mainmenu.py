@@ -94,13 +94,13 @@ timerwidget = ctk.CTkLabel(master =window,width = 50,height=50, border_width=3,b
 timerwidget.place(x=width-60,y=10)
 
 turnLabel = ctk.CTkLabel(master=window, text=f"It is {currentTurn.name}'s Turn", font = ("Calibri",50),text_color="black",border_color="black",border_width=5, fg_color="white")
-turnLabel.place(x=width/2 -100, y=25)
+turnLabel.place(x=width/2 +100, y=25)
 
 turnDescriptionLabel = ctk.CTkLabel(master=window, text = f"What will {currentTurn.name} do?")
-turnDescriptionLabel.place(x=width/2 -200, y=100)
+turnDescriptionLabel.place(x=width/2 -100, y=100)
 turnEntry = ctk.CTkEntry(master = window, width=200, height=50)
 turnEntry.bind("<Return>",getAndPlayTurn)
-turnEntry.place(x=width/2 -100, y= 100)
+turnEntry.place(x=width/2 +100, y= 100)
 
 
 window.after(1000,decrementTime)

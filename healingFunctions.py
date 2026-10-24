@@ -12,4 +12,4 @@ def heal_player(players, target): #target a specifc player in array players
         print(target, "has been healed!") #heals a player if they are alive and less than 5 hearts
     
     else:
-        print(target, "already has full health.") #doesnt heal a player if they are already full health
+        print(target, "already has full health. ") #doesnt heal a player if they are already full health

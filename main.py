@@ -70,7 +70,7 @@ Game Configuration:
     print("\nInitializing survival session...\n")
 
     initial_response = chat.send_message(init_prompt)
-    state: GameState = GameState.model_validate_json(initial_response.text)
+    state = GameState.model_validate_json(initial_response.text)
 
     while not state.game_over:
         turn = state.current_turn

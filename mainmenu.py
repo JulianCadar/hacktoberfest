@@ -37,7 +37,9 @@ def decrementTime():
         time-=1
         timerwidget.configure(text = f"{time}s")
         window.after(1000,decrementTime)
-
+currentTurn = players[0]
+def getAndPlayTurn():
+    global currentTurn
 
 window = ctk.CTk()
 window.geometry(f"{width}x{height}")
@@ -55,7 +57,8 @@ time = 20
 timerwidget = ctk.CTkLabel(master =window,width = 50,height=50, border_width=3,border_color="black",text = f"{time}s",fg_color="white",text_color="black")
 timerwidget.place(x=width-60,y=10)
 
-
+turnLabel = ctk.CTkLabel(master=window, text=f"It is {currentTurn.name}'s Turn", font = ("Calibri",50),text_color="black",border_color="black",border_width=5, fg_color="white")
+turnLabel.place(x=width/2 -100, y=25)
 
 window.after(1000,decrementTime)
 window.mainloop()

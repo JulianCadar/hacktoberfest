@@ -18,13 +18,11 @@ class Player():
         self.name = name
         self.hearts = health
 for i in range(4):
-    name = input(f"Enter the name of player {i+1}, or enter STOP to finish entering player_names: ")
+    name = input(f"Enter the name of player {i+1}: ")
     if name =="STOP":
         break
     else:
         player_names.append(name)
-
-initResponseFromAI = AI.gen_game(player_names)
 
 def addPlayerToFrame(name):
     global playersAlive
@@ -65,9 +63,15 @@ def decrementTime():
         return
 currentTurn = player_names[0]
 def getAndPlayTurn(*args):
+    global state
     global currentTurn
     global time
     turnText = turnEntry.get()
+
+    response = AI.chat.send_message(f"player chose: {turnText}")
+    state = AI.GameState.model_validate_json(response.text)
+    update_textbox()
+
     time = 20
     currentplayernum = player_names.index(currentTurn)
     currentplayernum+=1
@@ -78,7 +82,20 @@ def getAndPlayTurn(*args):
     turnDescriptionLabel.configure(text = f"What will {currentTurn} do?")
     turnEntry.delete(0,ctk.END)
 
+def update_textbox():
+    text = state.current_turn.narrative_resolution + "\n\nPlease enter one of the following:\n\n"
+    for choice in state.current_turn.choices:
+        text += f"\n[{choice.id}] {choice.description}"
 
+    responseLabel.configure(state="normal")
+    responseLabel.delete(1.0, ctk.END)
+    responseLabel.insert(
+        1.0,
+        text
+    )
+    responseLabel.configure(state="disabled")
+
+initResponseFromAI = AI.gen_game(player_names)
 
 window = ctk.CTk()
 window.geometry(f"{width}x{height}")
@@ -107,14 +124,10 @@ turnEntry.place(x=width/2 +100, y= 100)
 
 state = AI.GameState.model_validate_json(initResponseFromAI.text)
 
-responseLabel = ctk.CTkTextbox(master = window)
-responseLabel.place(x = width/2 +100, y = 500)
+responseLabel = ctk.CTkTextbox(master = window, width=500, height=500)
+responseLabel.place(x = width/2 -300, y = 500)
 
-responseLabel.configure(state="normal")
-
-responseLabel.insert(1.0, state.current_turn.narrative_resolution)
-
-responseLabel.configure(state="disabled")
+update_textbox()
 
 window.after(1000,decrementTime)
 window.mainloop()
